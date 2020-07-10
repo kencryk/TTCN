@@ -22,7 +22,7 @@
                             <img th:src="@{${'/images/' + section.title + '.jpg'}}" th:width="280px" th:height="220px"/>
                         </a>
                         <br>
-                        <button  style="text-align: center; margin-left: 100px; margin-top: 10px" name="section_id" th:value="${section.id}" class="btn btn-primary">Test Now</button>
+                        <button  style="text-align: center; margin-left: 100px; margin-top: 10px" name="section_id" th:value="${section.id}" class="btn btn-primary" th:target = "_blank" >Test Now</button>
                     </div>
                 </div>
             </form>
