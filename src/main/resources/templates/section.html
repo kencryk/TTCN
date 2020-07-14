@@ -22,7 +22,7 @@
                             <img th:src="@{${'/images/' + section.title + '.jpg'}}" th:width="280px" th:height="220px"/>
                         </a>
                         <br>
-                        <button  style="text-align: center; margin-left: 100px; margin-top: 10px" name="section_id" th:value="${section.id}" class="btn btn-primary" th:target = "_blank" >Test Now</button>
+                        <button onclick="openNewWindow()"  style="text-align: center; margin-left: 100px; margin-top: 10px" name="section_id" th:value="${section.id}" class="btn btn-primary" th:target = "_blank" >Test Now</button>
                     </div>
                 </div>
             </form>
@@ -30,7 +30,18 @@
     </div>
 </div>
 </body>
-<script th:inline="javascript">
-    // location.reload();
+<script >
+    window.onload = function() {
+        if(!window.location.hash) {
+            window.location = window.location + '#';
+            window.location.reload();
+        }
+    }
+function openNewWindow()  {
+    let id = $('.btn.btn-primary').val();
+    event.preventDefault();
+    window.close();
+   window.open('/createQuiz?section_id=' + id,'_blank');
+}
 </script>
 </html>
