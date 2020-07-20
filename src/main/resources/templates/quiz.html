@@ -59,51 +59,61 @@
 </div>
 <script th:inline="javascript">
     $( document ).ready(function() {
-        $( ".tab-pane" ).first().addClass( "active" );
-    $(function() {
-        var nextBtn = $("#next"),
-            prevBtn = $("#prev");
-        nextBtn.on('click', function(e) {
-            var active = $(".active");
-            var next = active.next('.tab-pane');
-            var next_li = active.next('.page-item')
+        $(".tab-pane").first().addClass("active");
+        $(function () {
+            var nextBtn = $("#next"),
+                prevBtn = $("#prev");
+            nextBtn.on('click', function (e) {
+                var active = $(".active");
+                var next = active.next('.tab-pane');
+                var next_li = active.next('.page-item')
 
-            if (next.length) {
-                active.removeClass('active');
-                next.addClass('active');
-                next_li.addClass('active');
-            }
+                if (next.length) {
+                    active.removeClass('active');
+                    next.addClass('active');
+                    next_li.addClass('active');
+                }
+            });
+            prevBtn.on('click', function (e) {
+                var active = $(".active");
+                var prev = active.prev('.tab-pane');
+                var prev_li = active.prev('.page-item')
+                if (prev.length) {
+                    active.removeClass('active');
+                    prev.addClass('active');
+                    prev_li.addClass('active');
+                }
+            });
         });
-        prevBtn.on('click', function(e) {
-            var active = $(".active");
-            var prev = active.prev('.tab-pane');
-            var prev_li = active.prev('.page-item')
-            if (prev.length) {
-                active.removeClass('active');
-                prev.addClass('active');
-                prev_li.addClass('active');
-            }
+        $(function () {
+            $('.choice_id').click(function () {
+                var getChoiceId = $(this).val();
+                console.log(getChoiceId);
+                $.ajax({
+                    type: "POST",
+                    url: "/api/quiz/addChoice",
+                    dataType: 'json',
+                    data: {
+                        getChoiceId: getChoiceId
+                    },
+                    success: function (data) {
+
+                    },
+                });
+            })
         });
-    });
-         $(function() {
-             $('.choice_id').click(function () {
-                 var getChoiceId = $(this).val();
-                 console.log(getChoiceId);
-                 $.ajax({
-                     type: "POST",
-                     url: "/api/quiz/addChoice",
-                     dataType : 'json',
-                     data : {
-                         getChoiceId : getChoiceId
-                     },
-                     success: function (data) {
 
-                     },
-                 });
-             })
-         });
-
+        // slight update to account for browsers not supporting e.which
+        function disableF5(e) {
+            if ((e.which || e.keyCode) == 116) e.preventDefault();
+        };
+        $(document).on("keydown", disableF5);
     });
+    window.onbeforeunload = closingCode;
+    function closingCode(){
+        SubmitForm();
+        return null; //<-- this prevents the dialog confirm box
+    }
 
 </script>
 </body>

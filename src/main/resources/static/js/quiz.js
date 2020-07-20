@@ -29,10 +29,11 @@ function LayCacGiaTriNULL () {
       }
     }
     if (count === 0 )  {
-      CauHoiChuaDuocTraLoi += `Question ${i} is not answered \n`;
+      CauHoiChuaDuocTraLoi += `${i} `;
     }
+
   }
-  console.log(CauHoiChuaDuocTraLoi);
+  if (CauHoiChuaDuocTraLoi !== "") CauHoiChuaDuocTraLoi += " is not answered";
   return CauHoiChuaDuocTraLoi;
 }
 function appearFunction () {
@@ -64,7 +65,9 @@ function appearFunction () {
             window.location.replace('/section');
           }
         })
-
+      } else {
+          SubmitForm();
+          window.location.replace('/section');
       }
     }
   });
@@ -86,5 +89,6 @@ function SubmitForm () {
     },
   });
 }
+
 HienThiThoiGianThi();
 LayCacGiaTriNULL();

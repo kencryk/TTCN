@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Teacher - Add new Quiz</title>
+    <title>Teacher - Thêm mới bài làm</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}">
@@ -125,7 +125,7 @@
         <li class="nav-item">
             <a class="nav-link" href="class.html">
                 <i class="fas fa-fw fa-table"></i>
-                <span>THÊM QUIZ MỚI</span></a>
+                <span>THÊM BÀI LÀM MỚI</span></a>
         </li>
 
         <!-- Divider -->
@@ -282,42 +282,66 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <form>
-                                    <select class="custom-select" style="width: 30%" id="listSection">
-                                        <option id="Section" value="Section" selected>Section...</option>
-                                        <option id="C plus - plus" value="C plus - plus">C plus - plus</option>
-                                        <option id="Java" value="Java">Java</option>
-                                        <option id="Python" value="Python">Python</option>
-                                        <option id="Data Structures" value="Data Structures">Data Structures</option>
-                                    </select>
-                                    <select class="custom-select" style="width: 30%" id="listTopic">
-                                        <option selected>Topics...</option>
-                                    </select>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="listClass">Class</label>
+                                            <select id="listClass" class="form-control" >
+                                                <option selected>Class...</option>
+                                                <option th:each="course : ${listCourse}" th:value="${course.name}"
+                                                        th:text="${course.name}"/>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="Timer">So Cau</label>
+                                            <input type="text" class="form-control" id="numberQuestion">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="Timer">Time</label>
+                                            <input type="text" class="form-control" id="Timer">
+                                        </div>
+                                    </div>
                                 </form>
 
                                 <form name="ckeditor" th:action="@{/api/admin/addQuestion}">
                                     <br>
-                                    <textarea name="editor1" id="editor1" rows="12" cols="350" style="width: 550px">
-                                </textarea>
-                                    <script>
-                                        // Replace the <textarea id="editor1"> with a CKEditor
-                                        // instance, using default configuration.
-                                        CKEDITOR.replace('editor1');
-                                    </script>
-                                    <div class="form-group">
-                                        <label for="formGroupExampleInput">First Choice</label>
-                                        <input type="text" class="form-control" id="Choice1" placeholder="First choice">
-                                        <input type="radio" class="form-check-input" name="optradio" value="1"
-                                               style="margin-left: -0.9rem">This is the right Choice
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">Danh sach bai lam</div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 15%" class="text-center">STT</th>
+                                                <th class="text-center">Ten Bai Lam</th>
+                                                <th style="width: 15%" class="text-center">So Cau</th>
+                                                <th style="width: 15%">Thoi Gian Thi</th>
+                                                <th style="width: 15%">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">Lap Trinh He Thong Nhung</td>
+                                                <td class="text-center"><span class="label label-danger">20 cau</span></td>
+                                                <td class="text-center"><span class="label label-danger">30 phut</span></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                                                    <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
                                     </div>
+<!--                                    <script>-->
+<!--                                        // Replace the <textarea id="editor1"> with a CKEditor-->
+<!--                                        // instance, using default configuration.-->
+<!--                                        CKEDITOR.replace('editor1');-->
+<!--                                    </script>-->
+
                                 </form>
-                                <table id="datatable" class="table table-bordered table-striped" style="width: 100%">
-                                    <tbody id="listChoice">
 
-                                    </tbody>
-                                </table>
 
-                                <button id="addChoice" class="btn btn-primary">Add Choice</button>
-                                <button id="add" class="btn btn-primary">Add Question to Quiz</button>
+                                <button onclick="addBaiLam()" id="addBaiLam" class="btn btn-primary">Submit</button>
+
 
                             </div>
                         </div>
@@ -382,6 +406,27 @@
 <!-- Custom scripts for all pages-->
 <script th:src="@{/js/teacherJS/sb-admin-2.min.js}"></script>
 
+<script>
+    function addBaiLam() {
+        // Lay STT on tbody, FUCK ME
+        let rows = document.getElementsByTagName('tbody')[0].rows;
+        let STT = rows.length+1;
+        let Class = $("#listClass").children("option").filter(":selected").text();
+        let SoCau = $("#numberQuestion").val();
+        let ThoiGian = $("#Timer").val();
+        let text = "<tr>" +
+       " <td class=\"text-center\">"+STT+"</td>"+
+           " <td class=\"text-center\">"+ Class + "</td>"+
+        "<td class=\"text-center\"><span class=\"label label-danger\">" + SoCau +" cau</span></td>"+
+        "<td class=\"text-center\"><span class=\"label label-danger\">"+ ThoiGian +" phut</span></td>"+
+        "<td>"+
+       " <button type=\"button\" class=\"btn btn-warning btn-sm\">Edit</button>"+
+           " <button type=\"button\" class=\"btn btn-danger btn-sm\">Delete</button>"+
+           "</td>"+
+            "</tr>";
+        $("tbody").append(text);
+    }
+</script>
 </body>
 
 </html>

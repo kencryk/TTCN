@@ -3,15 +3,11 @@ package com.aptech.project.project_sem4.controller;
 import com.aptech.project.project_sem4.model.*;
 import com.aptech.project.project_sem4.model.Class;
 import com.aptech.project.project_sem4.repository.RoleRepository;
-import com.aptech.project.project_sem4.repository.SectionRepository;
 import com.aptech.project.project_sem4.repository.UserRepository;
 import com.aptech.project.project_sem4.service.AdminService;
 import com.aptech.project.project_sem4.service.EmailService;
 import com.aptech.project.project_sem4.service.UserService;
-import com.nulabinc.zxcvbn.Strength;
-import com.nulabinc.zxcvbn.Zxcvbn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,9 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -191,6 +185,17 @@ public class RegisterController {
         model.addAttribute("listCourse", listCourseOfTeacher);
         return "class";
     }
+    // Add Bai Lam - DEMO:
+    @RequestMapping(value = {"/addBaiLam"})
+    public String addBaiLamPage(Model model)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        List<Course> listCourseOfTeacher = adminService.getListCourseOfTeacher(user.getId().toString());
+        model.addAttribute("listCourse", listCourseOfTeacher);
+        return "addBaiLam";
+    }
+    //-----------------------
     @RequestMapping(value = {"/userProfile"})
     public String userProfile(Model model)  
     {
